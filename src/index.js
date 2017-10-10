@@ -1,10 +1,12 @@
 // @flow
 
+type getInteralFunction = (Object) => Object;
+
 /**
  * Returns a function to get private data.
  * @returns {Function} - Function to get private properties of given object.
  */
-function internalDataFunction() : Function {
+function internalDataFunction() : getInteralFunction {
   const internalData = new WeakMap();
 
   if (arguments.length > 0) {
