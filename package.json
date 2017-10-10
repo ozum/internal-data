@@ -1,0 +1,48 @@
+{
+  "name": "internal-data",
+  "version": "0.0.1",
+  "description": "Private properties implementation using weakmaps",
+  "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
+  "keywords": [
+    "weakmap",
+    "private attribute"
+  ],
+  "author": "Özüm Eldoğan",
+  "license": "MIT",
+  "scripts": {
+    "build": "babel src/ -d lib/",
+    "flow": "flow",
+    "flowtyped": "flow-typed install",
+    "lint": "eslint src test --fix --ignore-path .gitignore",
+    "pretest": "flow && npm run lint",
+    "test": "cross-env NODE_ENV=test mocha --async-only --check-leaks --require babel-register",
+    "testWithCoverage": "npm run pretest && cross-env NODE_ENV=test nyc mocha --async-only --check-leaks --require babel-register",
+    "map": "node -r source-map-support/register",
+    "doc": "jsdoc2md src/*.js --configure jsdoc.json --template README.hbs > README.md",
+    "preversion": "npm run testWithCoverage && npm run doc"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.x",
+    "babel-eslint": "^8.x",
+    "babel-plugin-istanbul": "^4.x",
+    "babel-preset-env": "^1.x",
+    "babel-preset-flow": "^6.x",
+    "babel-register": "^6.x",
+    "code": "^5.x",
+    "cross-env": "^5.x",
+    "eslint": "^4.x",
+    "eslint-config-airbnb": "^16.x",
+    "eslint-plugin-import": "^2.x",
+    "eslint-plugin-jsx-a11y": "^6.x",
+    "eslint-plugin-react": "^7.x",
+    "flow-bin": "^0.x",
+    "jsdoc-babel": "^0.x",
+    "jsdoc-to-markdown": "^3.x",
+    "mocha": "^4.x",
+    "nyc": "^11.x",
+    "source-map-support": "^0.x"
+  }
+}
