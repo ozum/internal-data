@@ -13,7 +13,7 @@
   "author": "Özüm Eldoğan",
   "license": "MIT",
   "scripts": {
-    "build": "babel src/ -d lib/ && flow gen-flow-files src --out-dir lib",
+    "build": "rm -rf lib && babel src/ -d lib/ --source-maps&& flow gen-flow-files src --out-dir lib",
     "flow": "flow",
     "flowtyped": "flow-typed install",
     "lint": "eslint src test --fix --ignore-path .gitignore",

@@ -1,6 +1,6 @@
 // @flow
 
-type getInteralFunction = (Object) => Object;
+type getInteralFunction = (object: Object) => Object;
 
 /**
  * Returns a function to get private data.
