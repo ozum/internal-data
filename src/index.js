@@ -9,6 +9,10 @@ type getInternalFunction<T> = (object: Object) => T
 function internalDataFunction<T>() : getInternalFunction<T> {
   const internalData = new WeakMap();
 
+  if (arguments.length > 0) {
+    throw new Error("This function must be called without arguments. Maybe you forget () in require. require('internal-data')()");
+  }
+
   /**
    * Returns an object which contains private data of given object.
    * @param   {Object} object - Object to get private data of.
