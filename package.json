@@ -13,7 +13,7 @@
   "author": "Özüm Eldoğan",
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf lib && babel src/ -d lib/ --source-maps && flow gen-flow-files src --out-dir lib",
+    "build": "rm -rf lib && babel src/ -d lib/ --source-maps && flow gen-flow-files src --out-dir lib && npm run doc",
     "flow": "flow",
     "flowtyped": "flow-typed install",
     "lint": "eslint src test --fix --ignore-path .gitignore",
@@ -22,7 +22,7 @@
     "testWithCoverage": "npm run pretest && cross-env NODE_ENV=test nyc mocha --async-only --check-leaks --require babel-register",
     "map": "node -r source-map-support/register",
     "doc": "jsdoc2md src/*.js --configure jsdoc.json --template README.hbs > README.md",
-    "preversion": "npm run testWithCoverage && npm run doc && npm run build"
+    "preversion": "npm run testWithCoverage && npm run build"
   },
   "devDependencies": {
     "babel-cli": "^6.x",
