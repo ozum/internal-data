@@ -10,6 +10,11 @@
     "weakmap",
     "private attribute"
   ],
+  "bugs": "https://github.com/ozum/internal-data/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ozum/internal-data.git"
+  },
   "author": "Özüm Eldoğan",
   "license": "MIT",
   "scripts": {
@@ -22,7 +27,7 @@
     "testWithCoverage": "npm run pretest && cross-env NODE_ENV=test nyc mocha --async-only --check-leaks --require babel-register",
     "map": "node -r source-map-support/register",
     "doc": "jsdoc2md src/*.js --configure jsdoc.json --template README.hbs > README.md",
-    "preversion": "npm run testWithCoverage && npm run build"
+    "preversion": "npm run testWithCoverage && npm run build && git add README.md"
   },
   "devDependencies": {
     "babel-cli": "^6.x",
