@@ -13,7 +13,7 @@ Private properties implementation using WeakMap as described on [MDN - Private P
 ```js
 // @flow
 
-//                                      Don't forget parentheses () ↴
+//                                     Don't forget parentheses () ↴
 const getInternal: (MyClass) => Internal = require('internal-data')(); // eslint-disable-line no-use-before-define
 
 type Internal = {
