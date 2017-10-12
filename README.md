@@ -13,14 +13,14 @@ Private properties implementation using WeakMap as described on [MDN - Private P
 ```js
 // @flow
 
-//                                                                       ↙― Don't forget parenthesis ().
-const getInternal : (TestClass) => Internal = require('internal-data')(); // eslint-disable-line no-use-before-define
+//                                      Don't forget parentheses () ↴
+const getInternal: (MyClass) => Internal = require('internal-data')(); // eslint-disable-line no-use-before-define
 
 type Internal = {
   password: string
 };
 
-class TestClass {
+class MyClass {
   name: string;
 
   constructor(name, password) {
@@ -36,23 +36,24 @@ class TestClass {
 
   methodWithFlowError() {
     const internal = getInternal(this);
-    return internal.salary;  // -> FLOW ERROR: property `salary`. Property not found in
+    return internal.salary;  // -> FLOW ERROR
   }
 }
 
-const object = new TestClass('George', '1234');
+const object = new MyClass('George', '1234');
 
 const name     = object.name;                  // -> George
-const password = object.password;              // -> FLOW ERROR: property `password`. Property not found in
+const password = object.password;              // -> FLOW ERROR
 const isValid  = object.checkPassword('1234'); // -> true
 ```
 
 ## Vanilla JS
 
 ```js
-const getInternal = require('internal-data')(); // <---- Don't forget parenthesis ().
+//              Don't forget parentheses () ↴
+const getInternal = require('internal-data')();
 
-class TestClass {
+class MyClass {
   constructor(name, password) {
     const internal = getInternal(this);
     this.name = name;
@@ -65,7 +66,7 @@ class TestClass {
   }
 }
 
-const object = new TestClass('George', '1234');
+const object = new MyClass('George', '1234');
 
 const name     = object.name;                  // -> George
 const password = object.password;              // -> undefined
