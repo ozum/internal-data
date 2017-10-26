@@ -17,9 +17,9 @@ Private properties implementation using WeakMap as described on [MDN - Private P
 //                                     Don't forget parentheses () ↴
 const getInternal: (MyClass) => Internal = require('internal-data')(); // eslint-disable-line no-use-before-define
 
-type Internal = {
+type Internal = {|
   password: string
-};
+|};
 
 class MyClass {
   name: string;
