@@ -3,19 +3,59 @@
 
 # internal-data
 
+<!-- START doctoc -->
+<!-- END doctoc -->
+
 # Description
 
 Private properties implementation using WeakMap as described on [MDN - Private Properties](https://developer.mozilla.org/en-US/Add-ons/SDK/Guides/Contributor_s_Guide/Private_Properties).
 
 # Synopsis
 
-## Flow
-
+## Flow with Object Interface
 ```js
 // @flow
+import InternalData from 'internal-data';
 
-//                                     Don't forget parentheses () ↴
-const getInternal: (MyClass) => Internal = require('internal-data')(); // eslint-disable-line no-use-before-define
+const internalData: <MyClass, Internal> = new InternalData(); // eslint-disable-line no-use-before-define
+
+type Internal = {|
+  password: string
+|};
+
+class MyClass {
+  name: string;
+
+  constructor(name, password) {
+    const internal = internalData.get(this);
+    this.name = name;
+    internal.password = password;
+  }
+
+  checkPassword(password) {
+    const internal = internalData.get(this);
+    return internal.password === password;
+  }
+
+  methodWithFlowError() {
+    const internal = internalData.get(this);
+    return internal.salary;  // -> FLOW ERROR
+  }
+}
+
+const object = new MyClass('George', '1234');
+
+const name     = object.name;                  // -> George
+const password = object.password;              // -> FLOW ERROR
+const isValid  = object.checkPassword('1234'); // -> true
+```
+
+## Flow with Function Interface
+```js
+// @flow
+import InternalData from 'internal-data';
+
+const getInternal: (MyClass) => Internal = InternalData.getFunction(); // eslint-disable-line no-use-before-define
 
 type Internal = {|
   password: string
@@ -48,21 +88,22 @@ const password = object.password;              // -> FLOW ERROR
 const isValid  = object.checkPassword('1234'); // -> true
 ```
 
-## Vanilla JS
+## Vanilla JS with Object Interface
 
 ```js
-//              Don't forget parentheses () ↴
-const getInternal = require('internal-data')();
+import InternalData from 'internal-data';
+
+const internalData = new InternalData(); // eslint-disable-line no-use-before-define
 
 class MyClass {
   constructor(name, password) {
-    const internal = getInternal(this);
+    const internal = internalData.get(this);
     this.name = name;
     internal.password = password;
   }
 
   checkPassword(password) {
-    const internal = getInternal(this);
+    const internal = internalData.get(this);
     return internal.password === password;
   }
 }

@@ -1,12 +1,17 @@
 {
   "presets": [
-    "flow",
-    ["env",
+    "flow", ["env",
       {
-        "targets": { "node": "current" },
+        "targets": {
+          "node": "current"
+        },
         "useBuiltIns": true
       }
     ]
+  ],
+  "plugins": [
+    "add-module-exports",
+    "transform-export-extensions"
   ],
   "env": {
     "test": {
@@ -16,5 +21,5 @@
         }]
       ]
     }
-  }
+  },
 }

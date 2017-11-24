@@ -1,4 +1,6 @@
-const getInternal = require('../../src/index')();
+import InternalData from '../../src/index';
+
+const internalData = new InternalData();
 
 /**
  * Test class
@@ -10,7 +12,7 @@ class TestClass {
    * @param {string} password - Password to store in private property.
    */
   constructor(name, password) {
-    const internal = getInternal(this);
+    const internal = internalData.get(this);
     this.name = name;
     internal.password = password;
   }
@@ -21,7 +23,7 @@ class TestClass {
    * @returns {boolean}           - Whether given password is correct.
    */
   checkPassword(password) {
-    const internal = getInternal(this);
+    const internal = internalData.get(this);
     return internal.password === password;
   }
 }
