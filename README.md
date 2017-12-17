@@ -9,18 +9,15 @@
 
 - [Description](#description)
 - [Synopsis](#synopsis)
-  - [Flow with Object Interface](#flow-with-object-interface)
-  - [Flow with Function Interface](#flow-with-function-interface)
-  - [Vanilla JS with Object Interface](#vanilla-js-with-object-interface)
+  - [TypeScript with Object Interface](#typescript-with-object-interface)
+  - [TypeScript with Function Interface](#typescript-with-function-interface)
+  - [JavaScript with Object Interface](#javascript-with-object-interface)
 - [Details](#details)
 - [API](#api)
-  - [Classes](#classes)
-  - [Members](#members)
   - [InternalData](#internaldata)
     - [new InternalData()](#new-internaldata)
     - [internalData.get(object) ⇒ <code>Object</code>](#internaldatagetobject-%E2%87%92-codeobjectcode)
-    - [InternalData.getFunction() ⇒ <code>getInternalFn</code>](#internaldatagetfunction-%E2%87%92-codegetinternalfncode)
-  - [getInternalFn ⇒ <code>Object</code>](#getinternalfn-%E2%87%92-codeobjectcode)
+    - [InternalData.getFunction() ⇒ <code>GetInternalFn</code>](#internaldatagetfunction-%E2%87%92-codegetinternalfncode)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -30,83 +27,69 @@ Private properties implementation using WeakMap as described on [MDN - Private P
 
 # Synopsis
 
-## Flow with Object Interface
+## TypeScript with Object Interface
 ```js
-// @flow
 import InternalData from 'internal-data';
 
-const internalData: <MyClass, Internal> = new InternalData(); // eslint-disable-line no-use-before-define
+const internalData: InternalData<MyClass, Internal> = new InternalData();
 
-type Internal = {|
-  password: string
-|};
+type Internal = { password: string };
 
 class MyClass {
   name: string;
 
-  constructor(name, password) {
+  constructor(name: string, password: string) {
     const internal = internalData.get(this);
     this.name = name;
     internal.password = password;
   }
 
-  checkPassword(password) {
+  checkPassword(password: string): boolean {
     const internal = internalData.get(this);
     return internal.password === password;
-  }
-
-  methodWithFlowError() {
-    const internal = internalData.get(this);
-    return internal.salary;  // -> FLOW ERROR
   }
 }
 
 const object = new MyClass('George', '1234');
 
 const name     = object.name;                  // -> George
-const password = object.password;              // -> FLOW ERROR
+const password = object.password;              // -> TYPESCRIPT ERROR
 const isValid  = object.checkPassword('1234'); // -> true
 ```
 
-## Flow with Function Interface
+## TypeScript with Function Interface
 ```js
-// @flow
 import InternalData from 'internal-data';
 
-const getInternal: (MyClass) => Internal = InternalData.getFunction(); // eslint-disable-line no-use-before-define
+const getInternal = InternalData.getFunction<MyClass, Internal>();
 
-type Internal = {|
-  password: string
-|};
+type Internal = { password: string };
 
 class MyClass {
   name: string;
 
-  constructor(name, password) {
+  constructor(name: string, password: string) {
     const internal = getInternal(this);
     this.name = name;
     internal.password = password;
   }
 
-  checkPassword(password) {
+  checkPassword(password: string): boolean {
     const internal = getInternal(this);
     return internal.password === password;
-  }
-
-  methodWithFlowError() {
-    const internal = getInternal(this);
-    return internal.salary;  // -> FLOW ERROR
   }
 }
 
 const object = new MyClass('George', '1234');
 
 const name     = object.name;                  // -> George
-const password = object.password;              // -> FLOW ERROR
+const password = object.password;              // -> TYPESCRIPT ERROR
 const isValid  = object.checkPassword('1234'); // -> true
+
+console.log(object.checkPassword('1234'));
 ```
 
-## Vanilla JS with Object Interface
+## JavaScript with Object Interface
 
 ```js
 import InternalData from 'internal-data';
@@ -139,26 +122,10 @@ To access private properties of the object use `getInternal(this)` method. It re
 of given object (In this case it is It is `this`)
 
 # API
-## Classes
-
-<dl>
-<dt><a href="#InternalData">InternalData</a></dt>
-<dd><p>Class which provides private data storage.</p>
-</dd>
-</dl>
-
-## Members
-
-<dl>
-<dt><a href="#getInternalFn">getInternalFn</a> ⇒ <code>Object</code></dt>
-<dd><p>Returns an object which contains private data of given object.</p>
-</dd>
-</dl>
-
 <a name="InternalData"></a>
 
 ## InternalData
-Class which provides private data storage.
+<p>Class which provides private data storage.</p>
 
 **Kind**: global class  
 **Hideconstructor**:   
@@ -168,41 +135,31 @@ Class which provides private data storage.
     * _instance_
         * [.get(object)](#InternalData+get) ⇒ <code>Object</code>
     * _static_
-        * [.getFunction()](#InternalData.getFunction) ⇒ [<code>getInternalFn</code>](#getInternalFn)
+        * [.getFunction()](#InternalData.getFunction) ⇒ <code>GetInternalFn</code>
 
 <a name="new_InternalData_new"></a>
 
 ### new InternalData()
-Constructor
+<p>Constructor</p>
 
 <a name="InternalData+get"></a>
 
 ### internalData.get(object) ⇒ <code>Object</code>
-Returns private data object for given object.
+<p>Returns private data object for given object.</p>
 
 **Kind**: instance method of [<code>InternalData</code>](#InternalData)  
-**Returns**: <code>Object</code> - Private data of given object.  
+**Returns**: <code>Object</code> - <p>Private data of given object.</p>  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| object | <code>Object</code> | Object to get private data for. |
+| object | <code>Object</code> | <p>Object to get private data for.</p> |
 
 <a name="InternalData.getFunction"></a>
 
-### InternalData.getFunction() ⇒ [<code>getInternalFn</code>](#getInternalFn)
-Returns a function to access priavte data object.
+### InternalData.getFunction() ⇒ <code>GetInternalFn</code>
+<p>Returns a function to access private data object.</p>
 
 **Kind**: static method of [<code>InternalData</code>](#InternalData)  
-**Returns**: [<code>getInternalFn</code>](#getInternalFn) - - Function to get private properties of given object.  
-<a name="getInternalFn"></a>
-
-## getInternalFn ⇒ <code>Object</code>
-Returns an object which contains private data of given object.
-
-**Kind**: global variable  
-**Returns**: <code>Object</code> - - Object which contains private data of given object.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| object | <code>Object</code> | Object to get private data of. |
-
+**Returns**: <code>GetInternalFn</code> - <ul>
+<li>Function to get private properties of given object.</li>
+</ul>  

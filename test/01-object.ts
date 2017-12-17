@@ -1,9 +1,6 @@
-const Code        = require('code');
-const TestClassFn   = require('./utility/test-class-func');
-const TestClassOO   = require('./utility/test-class-oo');
-
-const { expect }  = Code;
-
+import { expect }   from 'chai';
+import TestClassFn  from './utility/test-class-func';
+import TestClassOO  from './utility/test-class-oo';
 
 describe('Function Interface', () => {
   const testObject = new TestClassFn('George', '1234');
@@ -14,12 +11,12 @@ describe('Function Interface', () => {
   });
 
   it('should have private property hidden.', (done) => {
-    expect(testObject.password).to.be.undefined();
+    expect(testObject.password).to.be.undefined;
     done();
   });
 
   it('should access it\'s private property.', (done) => {
-    expect(testObject.checkPassword('1234')).to.be.true();
+    expect(testObject.checkPassword('1234')).to.be.true;
     done();
   });
 });
@@ -34,12 +31,12 @@ describe('Object Oriented Interface', () => {
   });
 
   it('should have private property hidden.', (done) => {
-    expect(testObject.password).to.be.undefined();
+    expect(testObject.password).to.be.undefined;
     done();
   });
 
   it('should access it\'s private property.', (done) => {
-    expect(testObject.checkPassword('1234')).to.be.true();
+    expect(testObject.checkPassword('1234')).to.be.true;
     done();
   });
 });

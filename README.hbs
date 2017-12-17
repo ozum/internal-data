@@ -12,83 +12,69 @@ Private properties implementation using WeakMap as described on [MDN - Private P
 
 # Synopsis
 
-## Flow with Object Interface
+## TypeScript with Object Interface
 ```js
-// @flow
 import InternalData from 'internal-data';
 
-const internalData: <MyClass, Internal> = new InternalData(); // eslint-disable-line no-use-before-define
+const internalData: InternalData<MyClass, Internal> = new InternalData();
 
-type Internal = {|
-  password: string
-|};
+type Internal = { password: string };
 
 class MyClass {
   name: string;
 
-  constructor(name, password) {
+  constructor(name: string, password: string) {
     const internal = internalData.get(this);
     this.name = name;
     internal.password = password;
   }
 
-  checkPassword(password) {
+  checkPassword(password: string): boolean {
     const internal = internalData.get(this);
     return internal.password === password;
-  }
-
-  methodWithFlowError() {
-    const internal = internalData.get(this);
-    return internal.salary;  // -> FLOW ERROR
   }
 }
 
 const object = new MyClass('George', '1234');
 
 const name     = object.name;                  // -> George
-const password = object.password;              // -> FLOW ERROR
+const password = object.password;              // -> TYPESCRIPT ERROR
 const isValid  = object.checkPassword('1234'); // -> true
 ```
 
-## Flow with Function Interface
+## TypeScript with Function Interface
 ```js
-// @flow
 import InternalData from 'internal-data';
 
-const getInternal: (MyClass) => Internal = InternalData.getFunction(); // eslint-disable-line no-use-before-define
+const getInternal = InternalData.getFunction<MyClass, Internal>();
 
-type Internal = {|
-  password: string
-|};
+type Internal = { password: string };
 
 class MyClass {
   name: string;
 
-  constructor(name, password) {
+  constructor(name: string, password: string) {
     const internal = getInternal(this);
     this.name = name;
     internal.password = password;
   }
 
-  checkPassword(password) {
+  checkPassword(password: string): boolean {
     const internal = getInternal(this);
     return internal.password === password;
-  }
-
-  methodWithFlowError() {
-    const internal = getInternal(this);
-    return internal.salary;  // -> FLOW ERROR
   }
 }
 
 const object = new MyClass('George', '1234');
 
 const name     = object.name;                  // -> George
-const password = object.password;              // -> FLOW ERROR
+const password = object.password;              // -> TYPESCRIPT ERROR
 const isValid  = object.checkPassword('1234'); // -> true
+
+console.log(object.checkPassword('1234'));
 ```
 
-## Vanilla JS with Object Interface
+## JavaScript with Object Interface
 
 ```js
 import InternalData from 'internal-data';
