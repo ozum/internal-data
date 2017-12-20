@@ -4,6 +4,12 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+### 0.3.0 - 2017-12-20
+
+### Added
+
+* `InternalDataInterface` for TypeScript.
+
 ### 0.2.0 - 2017-12-17
 
 #### Changed

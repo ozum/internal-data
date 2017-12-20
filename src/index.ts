@@ -39,4 +39,9 @@ class InternalData<T extends Object, I> {
   }
 }
 
+interface InternalDataInterface<T extends Object, I> extends WeakMap<T, I> {
+  get: (object: T) => I;
+}
+
+export { InternalDataInterface };
 export default InternalData;

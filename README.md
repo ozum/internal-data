@@ -9,8 +9,8 @@
 
 - [Description](#description)
 - [Synopsis](#synopsis)
-  - [TypeScript with Object Interface](#typescript-with-object-interface)
-  - [TypeScript with Function Interface](#typescript-with-function-interface)
+  - [TypeScript with WeakMap](#typescript-with-weakmap)
+  - [JavaScript with Function Interface](#javascript-with-function-interface)
   - [JavaScript with Object Interface](#javascript-with-object-interface)
 - [Details](#details)
 - [API](#api)
@@ -27,11 +27,18 @@ Private properties implementation using WeakMap as described on [MDN - Private P
 
 # Synopsis
 
-## TypeScript with Object Interface
-```js
-import InternalData from 'internal-data';
+## TypeScript with WeakMap
 
-const internalData: InternalData<MyClass, Internal> = new InternalData();
+Actually this library does nothing more than exporting an interface for TypeScript.
+This interface just extends WeakMap by overriding its `get()` method to return `I` instead of `I | undefined`, because
+data should already be set in constructor.
+
+There is no need to do type assertion in every method to get internal data.
+
+```js
+import { InternalDataInterface } from 'internal-data';
+
+const internalData: InternalDataInterface<MyClass, Internal> = new WeakMap();
 
 type Internal = { password: string };
 
@@ -39,9 +46,9 @@ class MyClass {
   name: string;
 
   constructor(name: string, password: string) {
-    const internal = internalData.get(this);
+    const internal: Internal = { password };
+    internalData.set(this, internal);
     this.name = name;
-    internal.password = password;
   }
 
   checkPassword(password: string): boolean {
@@ -57,24 +64,21 @@ const password = object.password;              // -> TYPESCRIPT ERROR
 const isValid  = object.checkPassword('1234'); // -> true
 ```
 
-## TypeScript with Function Interface
+## JavaScript with Function Interface
+
 ```js
 import InternalData from 'internal-data';
 
-const getInternal = InternalData.getFunction<MyClass, Internal>();
-
-type Internal = { password: string };
+const getInternal = InternalData.getFunction();
 
 class MyClass {
-  name: string;
-
-  constructor(name: string, password: string) {
+  constructor(name, password) {
     const internal = getInternal(this);
     this.name = name;
     internal.password = password;
   }
 
-  checkPassword(password: string): boolean {
+  checkPassword(password) {
     const internal = getInternal(this);
     return internal.password === password;
   }
@@ -83,10 +87,8 @@ class MyClass {
 const object = new MyClass('George', '1234');
 
 const name     = object.name;                  // -> George
-const password = object.password;              // -> TYPESCRIPT ERROR
+const password = object.password;              // -> Undefined
 const isValid  = object.checkPassword('1234'); // -> true
-
-console.log(object.checkPassword('1234'));
 ```
 
 ## JavaScript with Object Interface
