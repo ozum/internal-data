@@ -1,6 +1,6 @@
 {
   "name": "internal-data",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Private properties implementation using weakmaps",
   "main": "lib/index.js",
   "typings": "lib/index.js",
